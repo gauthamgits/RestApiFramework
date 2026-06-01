@@ -8,7 +8,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.opentelemetry.exporter.logging.SystemOutLogRecordExporter;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -60,12 +59,12 @@ public class GoogleStepDefinition extends utils {
     }
     @Then("the response status code is {int}")
     public void the_response_status_code_is(int status) {
-        Assert.assertEquals(responsevalue.statusCode(),status);
+        Assert.assertEquals(status,responsevalue.statusCode());
 
     }
     @Then("the {string} in response body is {string}")
     public void the_in_response_body_is(String key, String value) {
-        Assert.assertEquals(Reusablemethods.readjson(responsevalue, key), value);
+        Assert.assertEquals(value, Reusablemethods.readjson(responsevalue, key));
         //System.out.println("passeijorwgjewpgwd");
 
     }
@@ -75,7 +74,7 @@ public class GoogleStepDefinition extends utils {
         context.setPlaceId(Reusablemethods.readjson(responsevalue, "place_id"));
         reqobj = given().spec(requestSpecBuilder()).queryParam("place_id",context.getPlaceId());
         user_calls_api_with_http_request(apiname, "get");
-        Assert.assertEquals(Reusablemethods.readjson(responsevalue, "name"), name);
+        Assert.assertEquals(name, Reusablemethods.readjson(responsevalue, "name"));
         System.out.println("name is same");
     }
 
