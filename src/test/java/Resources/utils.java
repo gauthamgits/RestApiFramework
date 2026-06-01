@@ -16,7 +16,7 @@ public class utils {
     public RequestSpecification requestSpecBuilder() throws IOException {
         if(reqspec==null) {
             PrintStream log = new PrintStream(new FileOutputStream("logging.txt"));
-            reqspec = new RequestSpecBuilder().setBaseUri(getglobalproperties("baseUrl")).addQueryParam("key", "qaclick123")
+            reqspec = new RequestSpecBuilder().setBaseUri(getglobalproperties("baseUrl")).addQueryParam("key", getglobalproperties("key"))
                     .addFilter(RequestLoggingFilter.logRequestTo(log))
                     .addFilter(ResponseLoggingFilter.logResponseTo(log))
                     .addHeader("Content-Type", "application/json").build();
@@ -26,11 +26,12 @@ public class utils {
     }
 
     public static String getglobalproperties(String key) throws IOException {
+        String env = System.getProperty("env", "global");
+        String fileName = env + ".properties";
         Properties prop = new Properties();
-        try (InputStream is = utils.class.getClassLoader()
-                .getResourceAsStream("global.properties")) {
+        try (InputStream is = utils.class.getClassLoader().getResourceAsStream(fileName)) {
             if (is == null) {
-                throw new FileNotFoundException("global.properties not found on classpath");
+                throw new FileNotFoundException(fileName + " not found on classpath");
             }
             prop.load(is);
         }
