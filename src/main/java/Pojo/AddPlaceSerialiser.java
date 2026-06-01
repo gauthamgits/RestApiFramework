@@ -2,7 +2,7 @@ package Pojo;
 
 import java.util.List;
 
-public class addplaceserialiser {
+public class AddPlaceSerialiser {
     private Location location;
     private int accuracy;
     private String name;

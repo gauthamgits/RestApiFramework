@@ -1,85 +1,77 @@
 package StepDefinitions;
 
 import Resources.ResourceConstants;
+import Resources.ScenarioContext;
 import Resources.TestDataBuilder;
-import Resources.utils;
+import Utilities.ReusableMethods;
+import apiautomation.PlacesApiClient;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.opentelemetry.exporter.logging.SystemOutLogRecordExporter;
-import io.restassured.builder.ResponseSpecBuilder;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
 import org.junit.Assert;
-import Utilities.Reusablemethods;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static io.restassured.RestAssured.given;
+public class GoogleStepDefinition {
 
-public class GoogleStepDefinition extends utils {
+    private final ScenarioContext context;
+    private final PlacesApiClient placesClient;
+    private final TestDataBuilder testDataBuilder = new TestDataBuilder();
+    private Response response;
 
-    public static String placeid;
-    RequestSpecification reqobj;
-    Response responsevalue;
-    TestDataBuilder tdbboject = new TestDataBuilder();
-
-//    @Given("Add place payload ready")
-//    public void add_place_payload_ready() throws IOException {
-//
-//        //reqobj = given().spec(requestSpecBuilder()).body(tdbboject.addPlacePayload());
-//
-//    }
-
-    @Given("Add place payload with {string}, {string} and {int}")
-    public void add_place_payload_with_data(String name, String language, Integer accuracy) throws IOException {
-
-        reqobj = given().spec(requestSpecBuilder()).body(tdbboject.addPlacePayload(name, language, accuracy));
-
+    public GoogleStepDefinition(ScenarioContext context, PlacesApiClient placesClient) {
+        this.context = context;
+        this.placesClient = placesClient;
     }
-    @When("user calls {string} api with {string} http request")
-    public void user_calls_api_with_http_request(String apiname, String methodType) {
-        ResourceConstants inputapiname = ResourceConstants.valueOf(apiname);
-        ResponseSpecification resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
-        if(methodType.equalsIgnoreCase("post")){
-        responsevalue = reqobj
-                .when().post(inputapiname.getapiname()); }
-        else if(methodType.equalsIgnoreCase("get")){
-            responsevalue = reqobj
-                    .when().get(inputapiname.getapiname());
-        }
+
+    @When("I add a place with {string}, {string} and {int}")
+    public void i_add_a_place(String name, String language, Integer accuracy) throws IOException {
+        response = placesClient.addPlace(testDataBuilder.addPlacePayload(name, language, accuracy));
+        attachTrace("addPlace");
     }
+
     @Then("the response status code is {int}")
     public void the_response_status_code_is(int status) {
-        Assert.assertEquals(responsevalue.statusCode(),status);
-
+        Assert.assertEquals(status, response.statusCode());
     }
+
     @Then("the {string} in response body is {string}")
     public void the_in_response_body_is(String key, String value) {
-        Assert.assertEquals(Reusablemethods.readjson(responsevalue, key), value);
-        //System.out.println("passeijorwgjewpgwd");
-
+        Assert.assertEquals(value, ReusableMethods.readJson(response, key));
     }
 
-    @And("I verify placeid maps to {string} in {string}")
-    public void iVerifyPlaceidMapsToname(String name, String apiname) throws IOException {
-        placeid = Reusablemethods.readjson(responsevalue,"place_id");
-        reqobj = given().spec(requestSpecBuilder()).queryParam("place_id",placeid);
-        user_calls_api_with_http_request(apiname, "get");
-        Assert.assertEquals(Reusablemethods.readjson(responsevalue, "name"), name);
-        System.out.println("name is same");
+    @And("I verify place_id maps to {string}")
+    public void i_verify_place_id_maps_to(String name) throws IOException {
+        context.setPlaceId(ReusableMethods.readJson(response, "place_id"));
+        response = placesClient.getPlace(context.getPlaceId());
+        attachTrace("getPlace");
+        Assert.assertEquals(name, ReusableMethods.readJson(response, "name"));
     }
 
-    @Given("Delete payload is ready")
-    public void deletePlayloadIsReady() throws IOException {
-
-        reqobj = given().spec(requestSpecBuilder()).body(tdbboject.deleteplacepayload(placeid));
-        System.out.println("delete done");
+    @When("I delete the place")
+    public void i_delete_the_place() throws IOException {
+        response = placesClient.deletePlace(testDataBuilder.deleteplacepayload(context.getPlaceId()));
+        attachTrace("deletePlace");
     }
 
+    private void attachTrace(String label) {
+        String trace = placesClient.drainLog();
+        if (context.getScenario() != null) {
+            context.getScenario().attach(trace, "text/plain", label);
+        }
+    }
 
+    @When("I get a place with an invalid place_id {string}")
+    public void i_get_a_place_with_invalid_id(String invalidPlaceId) throws IOException {
+        response = placesClient.getPlace(invalidPlaceId);
+        attachTrace("getPlace-negative");
+    }
+
+    @When("I delete a place with an invalid place_id {string}")
+    public void i_delete_a_place_with_invalid_id(String invalidPlaceId) throws IOException {
+        response = placesClient.deletePlace(testDataBuilder.deleteplacepayload(invalidPlaceId));
+        attachTrace("deletePlace-negative");
+    }
 }

@@ -11,7 +11,7 @@ public enum ResourceConstants {
         this.apiname=apiname;
 
     }
-    public String getapiname(){
+    public String getApiName(){
         return apiname;
     }
 }

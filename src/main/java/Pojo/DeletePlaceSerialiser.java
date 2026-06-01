@@ -1,6 +1,6 @@
 package Pojo;
 
-public class deleteplaceserialiser {
+public class DeletePlaceSerialiser {
 
     private String place_id;
 
