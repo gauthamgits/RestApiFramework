@@ -32,12 +32,6 @@ public class GoogleStepDefinition extends utils {
         this.context = context;
     }
 
-//    @Given("Add place payload ready")
-//    public void add_place_payload_ready() throws IOException {
-//
-//        //reqobj = given().spec(requestSpecBuilder()).body(tdbboject.addPlacePayload());
-//
-//    }
 
     @Given("Add place payload with {string}, {string} and {int}")
     public void add_place_payload_with_data(String name, String language, Integer accuracy) throws IOException {
@@ -49,13 +43,18 @@ public class GoogleStepDefinition extends utils {
     public void user_calls_api_with_http_request(String apiname, String methodType) {
         ResourceConstants inputapiname = ResourceConstants.valueOf(apiname);
         ResponseSpecification resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
-        if(methodType.equalsIgnoreCase("post")){
-        responsevalue = reqobj
-                .when().post(inputapiname.getapiname()); }
-        else if(methodType.equalsIgnoreCase("get")){
+        if (methodType.equalsIgnoreCase("post")) {
+            responsevalue = reqobj
+                    .when().post(inputapiname.getapiname());
+        } else if (methodType.equalsIgnoreCase("get")) {
             responsevalue = reqobj
                     .when().get(inputapiname.getapiname());
         }
+        String trace = drainLog();
+        if (context.getScenario() != null) {
+            context.getScenario().attach(trace, "text/plain", apiname + " " + methodType);
+        }
+
     }
     @Then("the response status code is {int}")
     public void the_response_status_code_is(int status) {
@@ -65,7 +64,6 @@ public class GoogleStepDefinition extends utils {
     @Then("the {string} in response body is {string}")
     public void the_in_response_body_is(String key, String value) {
         Assert.assertEquals(value, Reusablemethods.readjson(responsevalue, key));
-        //System.out.println("passeijorwgjewpgwd");
 
     }
 
@@ -75,14 +73,15 @@ public class GoogleStepDefinition extends utils {
         reqobj = given().spec(requestSpecBuilder()).queryParam("place_id",context.getPlaceId());
         user_calls_api_with_http_request(apiname, "get");
         Assert.assertEquals(name, Reusablemethods.readjson(responsevalue, "name"));
-        System.out.println("name is same");
+
+
     }
 
     @Given("Delete payload is ready")
     public void deletePlayloadIsReady() throws IOException {
 
         reqobj = given().spec(requestSpecBuilder()).body(tdbboject.deleteplacepayload(context.getPlaceId()));
-        System.out.println("delete done");
+
     }
 
 

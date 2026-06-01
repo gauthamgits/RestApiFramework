@@ -4,6 +4,7 @@ package StepDefinitions;
 
 import Resources.ScenarioContext;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 
 import java.io.IOException;
 
@@ -17,7 +18,12 @@ public class Hooks {
         this.context = context;
     }
 
-    @Before("@deleteplace")
+    @Before(order = 0)
+    public void captureScenario(Scenario scenario) {
+        context.setScenario(scenario);
+    }
+
+    @Before(value = "@deleteplace", order = 1)
     public void beforeScenario() throws IOException {
 
         if(context.getPlaceId() ==null){
