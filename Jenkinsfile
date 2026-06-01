@@ -10,6 +10,18 @@ pipeline {
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: '20'))
     }
+    parameters {
+        choice(
+                name: 'ENVIRONMENT',
+                choices: ['global', 'dev', 'test'],
+                description: 'Which properties file to use (-Denv)'
+        )
+        string(
+                name: 'TAGS',
+                defaultValue: '@endtoend',
+                description: 'Cucumber tag filter, e.g. @negative, @addplace, or "@endtoend and not @negative"'
+        )
+    }
 
     stages {
         stage('Checkout') {
@@ -19,7 +31,7 @@ pipeline {
         }
         stage('Build & Test') {
             steps {
-                sh 'mvn clean verify'
+                sh "mvn clean verify -Denv=${params.ENVIRONMENT} -Dcucumber.filter.tags=\"${params.TAGS}\""
             }
         }
     }
