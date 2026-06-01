@@ -62,4 +62,16 @@ public class GoogleStepDefinition {
             context.getScenario().attach(trace, "text/plain", label);
         }
     }
+
+    @When("I get a place with an invalid place_id {string}")
+    public void i_get_a_place_with_invalid_id(String invalidPlaceId) throws IOException {
+        response = placesClient.getPlace(invalidPlaceId);
+        attachTrace("getPlace-negative");
+    }
+
+    @When("I delete a place with an invalid place_id {string}")
+    public void i_delete_a_place_with_invalid_id(String invalidPlaceId) throws IOException {
+        response = placesClient.deletePlace(testDataBuilder.deleteplacepayload(invalidPlaceId));
+        attachTrace("deletePlace-negative");
+    }
 }

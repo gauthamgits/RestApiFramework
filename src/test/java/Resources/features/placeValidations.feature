@@ -17,3 +17,15 @@ Feature: Validating Place API's
     When I delete the place
     Then the response status code is 200
     And the "status" in response body is "OK"
+
+  # NEGATIVE TESTS
+
+  @negative @getInvalid
+  Scenario: Get a place using a non-existent place_id
+    When I get a place with an invalid place_id "non_existent_id_12345"
+    Then the response status code is 404
+
+  @negative @deleteInvalid
+  Scenario: Delete a place using a non-existent place_id
+    When I delete a place with an invalid place_id "non_existent_id_12345"
+    Then the response status code is 404

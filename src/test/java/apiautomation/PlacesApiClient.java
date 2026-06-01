@@ -1,7 +1,6 @@
 package apiautomation;
 
 import Pojo.AddPlaceSerialiser;
-import Pojo.AddPlaceSerialiser;
 import Pojo.DeletePlaceSerialiser;
 import Resources.ResourceConstants;
 import Resources.Utils;
