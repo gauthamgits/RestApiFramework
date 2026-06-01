@@ -6,6 +6,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import java.io.InputStream;
 
 import java.io.*;
 import java.util.Properties;
@@ -26,9 +27,13 @@ public class utils {
 
     public static String getglobalproperties(String key) throws IOException {
         Properties prop = new Properties();
-        FileInputStream fis = new FileInputStream("/Users/gauthammohandas/Documents/Test automation/RestAssuredBDD/src/test/java/Resources/global.properties");
-        prop.load(fis);
-
+        try (InputStream is = utils.class.getClassLoader()
+                .getResourceAsStream("global.properties")) {
+            if (is == null) {
+                throw new FileNotFoundException("global.properties not found on classpath");
+            }
+            prop.load(is);
+        }
         return prop.getProperty(key);
     }
 

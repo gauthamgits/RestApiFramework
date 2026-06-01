@@ -76,7 +76,7 @@
                     <includes>
                         <include>**/TestRunnerTest.java</include>
                     </includes>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <testFailureIgnore>false</testFailureIgnore>
                 </configuration>
                 <dependencies>
                     <dependency>
