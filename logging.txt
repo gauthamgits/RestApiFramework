@@ -28,7 +28,7 @@ Body:
     "language": "Malayalam"
 }
 HTTP/1.1 200 OK
-Date: Sun, 31 May 2026 10:18:17 GMT
+Date: Mon, 01 Jun 2026 09:25:40 GMT
 Server: Apache/2.4.52 (Ubuntu)
 Strict-Transport-Security: max-age=604800; includeSubDomains
 Access-Control-Allow-Origin: *
@@ -42,17 +42,17 @@ Content-Type: application/json;charset=UTF-8
 
 {
     "status": "OK",
-    "place_id": "ea3f8e78f5d72b26a1e4ca7e714ce845",
+    "place_id": "9b6a25a2d3534443d32c4684d5894932",
     "scope": "APP",
-    "reference": "a709528c36780546e570d6cf56e23c1ba709528c36780546e570d6cf56e23c1b",
-    "id": "a709528c36780546e570d6cf56e23c1b"
+    "reference": "5b1ac002ab4142aa2cac78a490bb7ce45b1ac002ab4142aa2cac78a490bb7ce4",
+    "id": "5b1ac002ab4142aa2cac78a490bb7ce4"
 }
 Request method:	GET
-Request URI:	https://rahulshettyacademy.com/maps/api/place/get/json?key=qaclick123&place_id=ea3f8e78f5d72b26a1e4ca7e714ce845
+Request URI:	https://rahulshettyacademy.com/maps/api/place/get/json?key=qaclick123&place_id=9b6a25a2d3534443d32c4684d5894932
 Proxy:			<none>
 Request params:	<none>
 Query params:	key=qaclick123
-				place_id=ea3f8e78f5d72b26a1e4ca7e714ce845
+				place_id=9b6a25a2d3534443d32c4684d5894932
 Form params:	<none>
 Path params:	<none>
 Headers:		Accept=*/*
@@ -61,7 +61,7 @@ Cookies:		<none>
 Multiparts:		<none>
 Body:			<none>
 HTTP/1.1 200 OK
-Date: Sun, 31 May 2026 10:18:17 GMT
+Date: Mon, 01 Jun 2026 09:25:40 GMT
 Server: Apache/2.4.52 (Ubuntu)
 Strict-Transport-Security: max-age=604800; includeSubDomains
 Access-Control-Allow-Origin: *
@@ -87,6 +87,94 @@ Content-Type: application/json;charset=UTF-8
     "language": "Malayalam"
 }
 Request method:	POST
+Request URI:	https://rahulshettyacademy.com/maps/api/place/add/json?key=qaclick123
+Proxy:			<none>
+Request params:	<none>
+Query params:	key=qaclick123
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:
+{
+    "location": {
+        "lat": 93.892494,
+        "lng": 54.22526
+    },
+    "accuracy": 98,
+    "name": "gautham",
+    "phone_number": "+51-59852973",
+    "address": "29,wug de, igogl",
+    "types": [
+        "kieg",
+        "guifgjfo",
+        "kglijal"
+    ],
+    "website": "http://ihgw.gwse",
+    "language": "mandarin"
+}
+HTTP/1.1 200 OK
+Date: Mon, 01 Jun 2026 09:25:43 GMT
+Server: Apache/2.4.52 (Ubuntu)
+Strict-Transport-Security: max-age=604800; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: POST
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+Content-Length: 194
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: application/json;charset=UTF-8
+
+{
+    "status": "OK",
+    "place_id": "c6b716e7259c2c09811131f300045966",
+    "scope": "APP",
+    "reference": "6ced61b04c654ba350a4aafd85abbfc06ced61b04c654ba350a4aafd85abbfc0",
+    "id": "6ced61b04c654ba350a4aafd85abbfc0"
+}
+Request method:	GET
+Request URI:	https://rahulshettyacademy.com/maps/api/place/get/json?key=qaclick123&place_id=c6b716e7259c2c09811131f300045966
+Proxy:			<none>
+Request params:	<none>
+Query params:	key=qaclick123
+				place_id=c6b716e7259c2c09811131f300045966
+Form params:	<none>
+Path params:	<none>
+Headers:		Accept=*/*
+				Content-Type=application/json
+Cookies:		<none>
+Multiparts:		<none>
+Body:			<none>
+HTTP/1.1 200 OK
+Date: Mon, 01 Jun 2026 09:25:43 GMT
+Server: Apache/2.4.52 (Ubuntu)
+Strict-Transport-Security: max-age=604800; includeSubDomains
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: POST
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+Content-Length: 237
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: application/json;charset=UTF-8
+
+{
+    "location": {
+        "latitude": "93.892494",
+        "longitude": "54.22526"
+    },
+    "accuracy": "98",
+    "name": "gautham",
+    "phone_number": "+51-59852973",
+    "address": "29,wug de, igogl",
+    "types": "kieg,guifgjfo,kglijal",
+    "website": "http://ihgw.gwse",
+    "language": "mandarin"
+}
+Request method:	POST
 Request URI:	https://rahulshettyacademy.com/maps/api/place/delete/json?key=qaclick123
 Proxy:			<none>
 Request params:	<none>
@@ -99,10 +187,10 @@ Cookies:		<none>
 Multiparts:		<none>
 Body:
 {
-    "place_id": "ea3f8e78f5d72b26a1e4ca7e714ce845"
+    "place_id": "c6b716e7259c2c09811131f300045966"
 }
 HTTP/1.1 200 OK
-Date: Sun, 31 May 2026 10:18:20 GMT
+Date: Mon, 01 Jun 2026 09:25:46 GMT
 Server: Apache/2.4.52 (Ubuntu)
 Strict-Transport-Security: max-age=604800; includeSubDomains
 Access-Control-Allow-Origin: *

@@ -1,6 +1,6 @@
 Feature: Validating Place API's
 
-  @addplace, @endtoend
+  @addplace @endtoend
   Scenario Outline: Verify if place is getting successfully added
     Given Add place payload with "<name>", "<language>" and <accuracy>
     When user calls "AddplaceAPI" api with "Post" http request
@@ -13,7 +13,7 @@ Feature: Validating Place API's
     | name    | language  | accuracy |
     | Jungan  | Malayalam | 30       |
 
-  @deleteplace, @endtoend
+  @deleteplace @endtoend
   Scenario: Verify if delete place api is working
     Given Delete payload is ready
     When user calls "DeleteplaceAPI" api with "Post" http request
