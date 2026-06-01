@@ -1,6 +1,7 @@
 package StepDefinitions;
 
 import Resources.ResourceConstants;
+import Resources.ScenarioContext;
 import Resources.TestDataBuilder;
 import Resources.utils;
 import io.cucumber.java.en.And;
@@ -23,10 +24,14 @@ import static io.restassured.RestAssured.given;
 
 public class GoogleStepDefinition extends utils {
 
-    public static String placeid;
+    private final ScenarioContext context;
     RequestSpecification reqobj;
     Response responsevalue;
     TestDataBuilder tdbboject = new TestDataBuilder();
+
+    public GoogleStepDefinition(ScenarioContext context) {
+        this.context = context;
+    }
 
 //    @Given("Add place payload ready")
 //    public void add_place_payload_ready() throws IOException {
@@ -67,8 +72,8 @@ public class GoogleStepDefinition extends utils {
 
     @And("I verify placeid maps to {string} in {string}")
     public void iVerifyPlaceidMapsToname(String name, String apiname) throws IOException {
-        placeid = Reusablemethods.readjson(responsevalue,"place_id");
-        reqobj = given().spec(requestSpecBuilder()).queryParam("place_id",placeid);
+        context.setPlaceId(Reusablemethods.readjson(responsevalue, "place_id"));
+        reqobj = given().spec(requestSpecBuilder()).queryParam("place_id",context.getPlaceId());
         user_calls_api_with_http_request(apiname, "get");
         Assert.assertEquals(Reusablemethods.readjson(responsevalue, "name"), name);
         System.out.println("name is same");
@@ -77,7 +82,7 @@ public class GoogleStepDefinition extends utils {
     @Given("Delete payload is ready")
     public void deletePlayloadIsReady() throws IOException {
 
-        reqobj = given().spec(requestSpecBuilder()).body(tdbboject.deleteplacepayload(placeid));
+        reqobj = given().spec(requestSpecBuilder()).body(tdbboject.deleteplacepayload(context.getPlaceId()));
         System.out.println("delete done");
     }
 
