@@ -3,7 +3,7 @@ package StepDefinitions;
 import Resources.ResourceConstants;
 import Resources.ScenarioContext;
 import Resources.TestDataBuilder;
-import Resources.utils;
+import Resources.Utils;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -14,14 +14,13 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.Assert;
-import Utilities.Reusablemethods;
+import Utilities.ReusableMethods;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 
-public class GoogleStepDefinition extends utils {
+public class GoogleStepDefinition extends Utils {
 
     private final ScenarioContext context;
     RequestSpecification reqobj;
@@ -45,10 +44,10 @@ public class GoogleStepDefinition extends utils {
         ResponseSpecification resspec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
         if (methodType.equalsIgnoreCase("post")) {
             responsevalue = reqobj
-                    .when().post(inputapiname.getapiname());
+                    .when().post(inputapiname.getApiName());
         } else if (methodType.equalsIgnoreCase("get")) {
             responsevalue = reqobj
-                    .when().get(inputapiname.getapiname());
+                    .when().get(inputapiname.getApiName());
         }
         String trace = drainLog();
         if (context.getScenario() != null) {
@@ -63,16 +62,16 @@ public class GoogleStepDefinition extends utils {
     }
     @Then("the {string} in response body is {string}")
     public void the_in_response_body_is(String key, String value) {
-        Assert.assertEquals(value, Reusablemethods.readjson(responsevalue, key));
+        Assert.assertEquals(value, ReusableMethods.readJson(responsevalue, key));
 
     }
 
     @And("I verify placeid maps to {string} in {string}")
     public void iVerifyPlaceidMapsToname(String name, String apiname) throws IOException {
-        context.setPlaceId(Reusablemethods.readjson(responsevalue, "place_id"));
+        context.setPlaceId(ReusableMethods.readJson(responsevalue, "place_id"));
         reqobj = given().spec(requestSpecBuilder()).queryParam("place_id",context.getPlaceId());
         user_calls_api_with_http_request(apiname, "get");
-        Assert.assertEquals(name, Reusablemethods.readjson(responsevalue, "name"));
+        Assert.assertEquals(name, ReusableMethods.readJson(responsevalue, "name"));
 
 
     }

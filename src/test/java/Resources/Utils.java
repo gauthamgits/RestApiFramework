@@ -14,19 +14,19 @@ import java.io.InputStream;
 import java.io.*;
 import java.util.Properties;
 
-public class utils {
+public class Utils {
     public static RequestSpecification reqspec;
-    private static final Logger log = LoggerFactory.getLogger(utils.class);
+    private static final Logger log = LoggerFactory.getLogger(Utils.class);
     private static final ByteArrayOutputStream logCapture = new ByteArrayOutputStream();
 
 
     public RequestSpecification requestSpecBuilder() throws IOException {
         if (reqspec == null) {
-            log.info("Building request spec for baseUri: {}", getglobalproperties("baseUrl"));
+            log.info("Building request spec for baseUri: {}", getGlobalProperty("baseUrl"));
             PrintStream capture = new PrintStream(logCapture, true);
             reqspec = new RequestSpecBuilder()
-                    .setBaseUri(getglobalproperties("baseUrl"))
-                    .addQueryParam("key", getglobalproperties("key"))
+                    .setBaseUri(getGlobalProperty("baseUrl"))
+                    .addQueryParam("key", getGlobalProperty("key"))
                     .addFilter(RequestLoggingFilter.logRequestTo(capture))
                     .addFilter(ResponseLoggingFilter.logResponseTo(capture))
                     .addHeader("Content-Type", "application/json")
@@ -41,11 +41,11 @@ public class utils {
         return captured;
     }
 
-    public static String getglobalproperties(String key) throws IOException {
+    public static String getGlobalProperty(String key) throws IOException {
         String env = System.getProperty("env", "global");
         String fileName = env + ".properties";
         Properties prop = new Properties();
-        try (InputStream is = utils.class.getClassLoader().getResourceAsStream(fileName)) {
+        try (InputStream is = Utils.class.getClassLoader().getResourceAsStream(fileName)) {
             if (is == null) {
                 throw new FileNotFoundException(fileName + " not found on classpath");
             }
@@ -54,9 +54,5 @@ public class utils {
         return prop.getProperty(key);
     }
 
-    public static String readdjson(Response response, String path){
-        String responsestring = response.asString();
-        JsonPath jp = new JsonPath(responsestring);
-        return jp.getString(path);
-    }
+
 }

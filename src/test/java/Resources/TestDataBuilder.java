@@ -1,16 +1,16 @@
 package Resources;
 
 import Pojo.Location;
-import Pojo.addplaceserialiser;
-import Pojo.deleteplaceserialiser;
+import Pojo.AddPlaceSerialiser;
+import Pojo.DeletePlaceSerialiser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestDataBuilder {
 
-    public addplaceserialiser addPlacePayload(String name, String language, int accuracy){
-        addplaceserialiser obj = new addplaceserialiser();
+    public AddPlaceSerialiser addPlacePayload(String name, String language, int accuracy){
+        AddPlaceSerialiser obj = new AddPlaceSerialiser();
         obj.setAccuracy(accuracy);
         obj.setAddress("29,wug de, igogl");
         obj.setLanguage(language);
@@ -31,8 +31,8 @@ public class TestDataBuilder {
     }
     
     
-    public deleteplaceserialiser deleteplacepayload (String placeid){
-        deleteplaceserialiser delobj = new deleteplaceserialiser();
+    public DeletePlaceSerialiser deleteplacepayload (String placeid){
+        DeletePlaceSerialiser delobj = new DeletePlaceSerialiser();
         delobj.setPlace_id(placeid);
         
         return delobj;
