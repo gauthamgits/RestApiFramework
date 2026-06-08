@@ -43,21 +43,21 @@ pipeline {
         stage('Checkout') {
             steps { checkout scm }
         }
-        stage('Build & Test in Docker') {
+        stage('Run Tests in Docker') {
             steps {
-                script {
-                    // Build the image, tagged with the build number for traceability
-                    sh "docker build -t restassured-bdd:${BUILD_NUMBER} ."
+                sh """
+            # Run tests inside the container (no mount over target).
+            # Give the container a name so we can copy files out afterwards.
+            docker run --name testrun-${BUILD_NUMBER} \
+                restassured-bdd:${BUILD_NUMBER} \
+                clean verify -Denv=${params.ENVIRONMENT} -Dcucumber.filter.tags="${params.TAGS}" || true
 
-                    // Run the suite inside the container.
-                    // Mount target/ out so reports land on the Jenkins workspace.
-                    sh """
-                docker run --rm \
-                    -v \$(pwd)/target:/app/target \
-                    restassured-bdd:${BUILD_NUMBER} \
-                    clean verify -Denv=${params.ENVIRONMENT} -Dcucumber.filter.tags="${env.RUN_TAGS}"
-            """
-                }
+            # Copy the reports OUT of the container into the Jenkins workspace
+            docker cp testrun-${BUILD_NUMBER}:/app/target ./target
+
+            # Clean up the container
+            docker rm testrun-${BUILD_NUMBER}
+        """
             }
         }
     }
