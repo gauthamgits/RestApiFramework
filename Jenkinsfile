@@ -43,6 +43,11 @@ pipeline {
         stage('Checkout') {
             steps { checkout scm }
         }
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t restassured-bdd:${BUILD_NUMBER} ."
+            }
+        }
         stage('Run Tests in Docker') {
             steps {
                 sh """
