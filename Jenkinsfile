@@ -55,9 +55,10 @@ pipeline {
             # Give the container a name so we can copy files out afterwards.
             docker run --name testrun-${BUILD_NUMBER} \
                 restassured-bdd:${BUILD_NUMBER} \
-                clean verify -Denv=${params.ENVIRONMENT} -Dcucumber.filter.tags="${params.TAGS}" || true
+                clean verify -Denv=${params.ENVIRONMENT} -Dcucumber.filter.tags="${env.RUN_TAGS}" || true
 
             # Copy the reports OUT of the container into the Jenkins workspace
+            rm -rf target
             docker cp testrun-${BUILD_NUMBER}:/app/target ./target
 
             # Clean up the container
@@ -71,8 +72,8 @@ pipeline {
         always {
             junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
             publishHTML(target: [
-                    reportDir: 'target/cucumber-html-reports',
-                    reportFiles: 'overview-features.html',
+                    reportDir: 'target/cucumber-reports',       // ← the folder that EXISTS
+                    reportFiles: 'cucumber.html',                // ← your runner's HTML report
                     reportName: 'Cucumber Report',
                     keepAll: true,
                     alwaysLinkToLastBuild: true,
