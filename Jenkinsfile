@@ -43,9 +43,21 @@ pipeline {
         stage('Checkout') {
             steps { checkout scm }
         }
-        stage('Build & Test') {
+        stage('Build & Test in Docker') {
             steps {
-                sh "mvn clean verify -Denv=${params.ENVIRONMENT} -Dcucumber.filter.tags=\"${env.RUN_TAGS}\""
+                script {
+                    // Build the image, tagged with the build number for traceability
+                    sh "docker build -t restassured-bdd:${BUILD_NUMBER} ."
+
+                    // Run the suite inside the container.
+                    // Mount target/ out so reports land on the Jenkins workspace.
+                    sh """
+                docker run --rm \
+                    -v \$(pwd)/target:/app/target \
+                    restassured-bdd:${BUILD_NUMBER} \
+                    clean verify -Denv=${params.ENVIRONMENT} -Dcucumber.filter.tags="${env.RUN_TAGS}"
+            """
+                }
             }
         }
     }
