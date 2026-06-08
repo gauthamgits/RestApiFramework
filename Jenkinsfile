@@ -72,8 +72,8 @@ pipeline {
         always {
             junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
             publishHTML(target: [
-                    reportDir: 'target/cucumber-reports',       // ← the folder that EXISTS
-                    reportFiles: 'cucumber.html',                // ← your runner's HTML report
+                    reportDir: 'target/cucumber-html-reports',
+                    reportFiles: 'overview-features.html',
                     reportName: 'Cucumber Report',
                     keepAll: true,
                     alwaysLinkToLastBuild: true,
