@@ -15,24 +15,24 @@ import java.io.*;
 import java.util.Properties;
 
 public class Utils {
-    public static RequestSpecification reqspec;
+    //public static RequestSpecification reqspec;
     private static final Logger log = LoggerFactory.getLogger(Utils.class);
-    private static final ByteArrayOutputStream logCapture = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream logCapture = new ByteArrayOutputStream();
 
 
     public RequestSpecification requestSpecBuilder() throws IOException {
-        if (reqspec == null) {
+
             log.info("Building request spec for baseUri: {}", getGlobalProperty("baseUrl"));
             PrintStream capture = new PrintStream(logCapture, true);
-            reqspec = new RequestSpecBuilder()
+            return new RequestSpecBuilder()
                     .setBaseUri(getGlobalProperty("baseUrl"))
                     .addQueryParam("key", getGlobalProperty("key"))
                     .addFilter(RequestLoggingFilter.logRequestTo(capture))
                     .addFilter(ResponseLoggingFilter.logResponseTo(capture))
                     .addHeader("Content-Type", "application/json")
                     .build();
-        }
-        return reqspec;
+
+
     }
 
     public String drainLog() {
