@@ -16,4 +16,5 @@ COPY src ./src
 
 # Default command when the container runs: execute the test suite.
 # Tags/env can be overridden at `docker run` time (see below).
-ENTRYPOINT ["mvn", "clean", "verify"]
+ENTRYPOINT ["mvn"]
+CMD ["clean", "verify"]
